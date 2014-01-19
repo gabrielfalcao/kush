@@ -1,0 +1,27 @@
+language: python
+
+python:
+  - "2.7"
+
+services:
+  - redis-server
+  - mysql
+
+env:
+  - KUSH_TEST_TYPE=unit
+  - KUSH_TEST_TYPE=functional
+
+cache:
+  apt: true
+  directories:
+    - $HOME/.curds
+
+install:
+  - pip install curdling
+  - curd install -r development.txt
+
+before_script:
+  - python manage.py db
+
+script:
+  - TESTING=true python manage.py $KUSH_TEST_TYPE

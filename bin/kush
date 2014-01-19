@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# flake8: noqa
+import re
+import sys
+import time
+import boto
+from os.path import abspath, join, dirname
+from boto.route53.record import ResourceRecordSets
+
+ec2 = boto.connect_ec2()
+route53 = boto.connect_route53()
+
+local_path = lambda *path: join(abspath(dirname(__file__)), *path)
+
+
+if len(sys.argv) < 2:
+    print "usage: {0} subdomain".format(sys.argv[0])
+    sys.exit(1)
+
+
+def slugify(string):
+    string = string.lower()
+    string = re.sub(r'\s+', ' ', string)
+    string = re.sub(r'\W+', '-', string)
+    return string
+
+
+name = slugify(sys.argv[1])
+subdomain = "{0}.weedlabs.io".format(name)
+ROUTE53_ZONE_ID = 'Z3LUTEO6WNCS6V'
+
+CLOUD_INIT_PATH = local_path('cloud-init.sh')
+CLOUD_INIT = open(CLOUD_INIT_PATH).read().format(**locals())
+
+reservation = ec2.run_instances(
+    image_id="ami-a73264ce",
+    key_name="weedlabs-master",
+    instance_type="t1.micro",
+    security_group_ids=[
+        "sg-7580be1e",
+        "sg-b5e0a7de",
+    ],
+    user_data=CLOUD_INIT,
+)
+
+
+STATE_COLORS = {
+    'pending': '\033[1;33m',
+    'running': '\033[1;32m',
+}
+
+
+def show_state(instance, started):
+    now = time.time()
+    elapsed = int(now - started)
+    color = STATE_COLORS.get(instance.state, '\033[1;31m')
+    state = "{0}{1}".format(color, instance.state)
+    base = "\033[1;34m({2})\033[1;37m{0} is: {1}\033[0m\r\033[A"
+    return base.format(instance.id, state, elapsed)
+
+
+for instance in reservation.instances:
+    instance.add_tag("Name", subdomain)
+    started = time.time()
+    while instance.state != 'running':
+        instance.update()
+        print show_state(instance, started)
+
+    print
+    changes = ResourceRecordSets(route53, ROUTE53_ZONE_ID)
+
+
+    print "binding the domain \033[1;32m{0}\033[0m to \033[1;37m{1}\033[0m".format(
+        subdomain, instance.public_dns_name)
+    change = changes.add_change("CREATE", subdomain, "CNAME", ttl=60)
+    change.add_value(instance.dns_name)
+    print "saving", changes.commit()

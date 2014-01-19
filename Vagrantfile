@@ -11,7 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     salt.verbose = true
 
     salt.minion_config = "deploy/minion.conf"
-    salt.run_highstate = true
+    salt.run_highstate = false  # change to true if you want
+                                # `vagrant up` to automatically provision
   end
 
   config.vm.network :private_network, ip: "10.11.12.13"

@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     salt.verbose = true
 
     salt.minion_config = "deploy/minion.conf"
-    salt.run_highstate = false  # change to true if you want
+    salt.run_highstate = true  # change to true if you want
                                 # `vagrant up` to automatically provision
   end
 

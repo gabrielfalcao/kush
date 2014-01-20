@@ -54,11 +54,6 @@ webapp:
   pip.installed:
     - name: distribute==0.6.31
 
-"ensure latest distribute venv":
-  pip.installed:
-    - name: "distribute==0.6.31"
-    - bin_env: {{ pillar['venv_path'] }}
-
 
 {{ pillar['venv_path'] }}:
   virtualenv.manage:

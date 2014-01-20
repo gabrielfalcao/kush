@@ -17,6 +17,20 @@ python manage.py run
 
 ## 3. deploy in vagrant
 
+
+### if you haven't deployed yet...
+
+you gotta make sure to create your keys and export to github
+
+```bash
+ssh-keygen -f deploy/salt/kush/id_rsa -N ""
+cat deploy/salt/kush/id_rsa | pbcopy
+
+# now go and add this as deploy key for your repo, otherwise salt won't be able to git clone.
+```
+
+### after you already have the deploy keys at github
+
 ```bash
 vagrant up
 vagrant ssh

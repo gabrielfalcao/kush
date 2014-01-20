@@ -4,3 +4,4 @@ base:
 
   'kush.weedlabs.io':
     - kush
+    - weedlabs

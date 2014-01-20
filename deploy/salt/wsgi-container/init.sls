@@ -10,6 +10,13 @@
 
 {% endfor %}
 
+{% for subname in ["enabled", "available"] %}
+/etc/nginx/sites-{{ subname }}/default:
+  file:
+    - absent
+{% endfor %}
+
+
 app-pkgs:
   pkg.installed:
     - names:

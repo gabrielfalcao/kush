@@ -22,21 +22,21 @@ weedlabs_public_key:
       - pkg: nginx
 
 
-{{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz:
-  file:
-    - managed
-    - source: salt://weedlabs/www-fallback.tar.gz
+{{ pillar['weedlabs']['www_fallback'] }}:
+  file.directory:
+    - mode: 755
+    - makedirs: True
+
+
+extract-www-fallback:
+  module.run:
+    - name: archive.tar
+    - options: zxfv
+    - tarfile: salt://weedlabs/www-fallback.tar.gz
+    - dest: {{ pillar['weedlabs']['www_fallback'] }}/
+    - archive_format: tar
     - require:
-      - pkg: nginx
-
-
-www-fallback.tar.gz:
-  archive:
-    - tar
-    - options: xzf
-    - tarfile: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
-    - dest: {{ pillar['weedlabs']['www_fallback'] }}
-
+      - file: {{ pillar['weedlabs']['www_fallback'] }}
 
 weedlabs.io:
   git.latest:

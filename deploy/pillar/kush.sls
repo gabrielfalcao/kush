@@ -20,9 +20,9 @@ lib_path: "/srv/usr/lib"
 log_path: "/var/log"
 
 github_users:
-  - gabrielfalcao: gabrielfalcao
-  - alscardoso: andre
-  - clarete: lincoln
+  gabrielfalcao: gabrielfalcao
+  alscardoso: andre
+  clarete: lincoln
 
 environment:
   PORT: "8000"

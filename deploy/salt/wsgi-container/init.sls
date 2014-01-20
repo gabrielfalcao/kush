@@ -31,6 +31,12 @@ app-pkgs:
       - libxslt1-dev
       - build-essential
 
+system:
+    network.system:
+      - enabled: True
+      - hostname: {{ grains['id'] }}
+
+
 webapp:
   git.latest:
     - name: {{ pillar['repository'] }}
@@ -70,7 +76,7 @@ webapp:
     - makedirs: True
     - mode: 755
 
-{% for github_user, user in pillar['github_users'] %}
+{% for github_user, user in pillar['github_users'].items() %}
 {{user}}:
   user.present
 
@@ -93,4 +99,5 @@ webapp:
 /home/{{ user }}/.ssh/authorized_keys:
   file.managed:
     - mode: 600
+
 {% endfor %}

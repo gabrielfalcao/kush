@@ -47,10 +47,12 @@ EOF
 sudo cp salt-minion.conf /etc/init
 
 service salt-minion start || echo 'started'
+sleep 5
 service salt-minion stop || echo 'stopped'
 
 curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" http://kush.weedlabs.io/sms/{subdomain}
 
 curl http://kush.weedlabs.io
 
+service salt-minion start || echo 'started'
 service salt-minion restart || echo 'salt-minion-running'

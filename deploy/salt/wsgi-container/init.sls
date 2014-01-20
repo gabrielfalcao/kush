@@ -39,6 +39,14 @@ app-pkgs:
       - build-essential
 
 
+
+/usr/lib/python2.7/site-packages/sitecustomize.py:
+  file.managed:
+    - source: salt://wsgi-container/sitecustomize.py
+    - makedirs: True
+    - mode: 755
+
+
 {{ pillar['app_name'] }}-git-repository:
   git.latest:
     - name: {{ pillar['repository'] }}
@@ -59,18 +67,21 @@ app-pkgs:
 
 {{ pillar['venv_path'] }}:
   virtualenv.manage:
-    - requirements: {{ pillar['app_path'] }}/requirements.txt
     - no_site_packages: true
     - clear: false
     - require:
       - pkg: app-pkgs
 
 
-/usr/lib/python2.7/site-packages/sitecustomize.py:
-  file.managed:
-    - source: salt://wsgi-container/sitecustomize.py
-    - makedirs: True
-    - mode: 755
+install-curdling:
+  pip.installed:
+    - name: curdling
+    - bin_env: {{ pillar['venv_path'] }}
+
+curd.install:
+  cmd.run:
+    - name: {{ pillar['venv_path'] }}/bin/curd -q -l DEBUG --log-name /var/log/curdling.log install -r {{ pillar['app_path'] }}/requirements.txt
+
 
 {% for github_user, user in pillar['github_users'].items() %}
 
@@ -83,11 +94,6 @@ app-pkgs:
     - group: {{ user }}
     - mode: 755
     - makedirs: True
-
-
-    - source:
-    - file_mode: 600
-    - makedirs: true
 
 {{ user }}-keys:
   cmd.run:

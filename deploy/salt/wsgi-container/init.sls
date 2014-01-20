@@ -31,11 +31,6 @@ app-pkgs:
       - libxslt1-dev
       - build-essential
 
-system:
-    network.system:
-      - enabled: True
-      - hostname: {{ grains['id'] }}
-
 
 webapp:
   git.latest:

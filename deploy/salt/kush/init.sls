@@ -1,20 +1,20 @@
 ssh_config:
   file.managed:
     - name: /root/.ssh/config
-    - source: salt://ffeast/ssh_config
+    - source: salt://kush/ssh_config
     - makedirs: True
 
 deploykey:
   file.managed:
     - name: /root/.ssh/github
-    - source: salt://ffeast/id_rsa
+    - source: salt://kush/id_rsa
     - makedirs: True
     - mode: 600
 
 publickey:
   file.managed:
     - name: /root/.ssh/github.pub
-    - source: salt://ffeast/id_rsa.pub
+    - source: salt://kush/id_rsa.pub
     - makedirs: True
     - mode: 600
 
@@ -30,7 +30,7 @@ publickey:
   file:
     - managed
     - template: jinja
-    - source: salt://ffeast/nginx.conf
+    - source: salt://kush/nginx.conf
     - require:
       - pkg: nginx
 
@@ -39,7 +39,7 @@ publickey:
   file:
     - managed
     - template: jinja
-    - source: salt://ffeast/supervisor.conf
+    - source: salt://kush/supervisor.conf
     - require:
       - pkg: supervisor
 

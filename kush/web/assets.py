@@ -8,10 +8,14 @@ from flask.ext.assets import (
 
 from kush.base.assets import jquery, angular, bootstrap_js, bootstrap_css
 
-web_scripts = Bundle('js/web/*.coffee', filters=('coffeescript'))
-web_css = Bundle('css/web/*.less', filters=('recess',))
+web_scripts = Bundle('js/*.js')
+web_css = Bundle('less/*.less', filters=('recess',))
 
 BUNDLES = [
-    ('css-web', Bundle(bootstrap_css, web_css, filters=('cssmin',),output='kush.css')),
-    ('js-web', Bundle(jquery, angular, bootstrap_js, web_scripts, filters=('jsmin',), output='kush.js')),
+    ('css-web', Bundle(bootstrap_css, web_css,
+                       #filters=('cssmin',),
+                       output='kush.css')),
+    ('js-web', Bundle(jquery, angular, bootstrap_js, web_scripts,
+                      #filters=('jsmin',),
+                      output='kush.js')),
 ]

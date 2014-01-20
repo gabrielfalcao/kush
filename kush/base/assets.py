@@ -13,21 +13,26 @@ jquery = Bundle('vendor/jquery/jquery.js')
 angular = Bundle('vendor/angular/angular.js')
 
 bootstrap_js = Bundle(
-    "vendor/bootstrap/js/affix.js",
-    "vendor/bootstrap/js/alert.js",
-    "vendor/bootstrap/js/button.js",
-    "vendor/bootstrap/js/carousel.js",
-    "vendor/bootstrap/js/collapse.js",
-    "vendor/bootstrap/js/dropdown.js",
-    "vendor/bootstrap/js/modal.js",
-    "vendor/bootstrap/js/popover.js",
-    "vendor/bootstrap/js/scrollspy.js",
-    "vendor/bootstrap/js/tab.js",
-    "vendor/bootstrap/js/tooltip.js",
-    "vendor/bootstrap/js/transition.js",
+    "vendor/uikit/src/js/core.js",
+    "vendor/uikit/src/js/touch.js",
+    "vendor/uikit/src/js/alert.js",
+    "vendor/uikit/src/js/button.js",
+    "vendor/uikit/src/js/dropdown.js",
+    "vendor/uikit/src/js/grid.js",
+    "vendor/uikit/src/js/modal.js",
+    "vendor/uikit/src/js/offcanvas.js",
+    "vendor/uikit/src/js/nav.js",
+    "vendor/uikit/src/js/tooltip.js",
+    "vendor/uikit/src/js/switcher.js",
+    "vendor/uikit/src/js/tab.js",
+    "vendor/uikit/src/js/search.js",
+    "vendor/uikit/src/js/scrollspy.js",
+    "vendor/uikit/src/js/smooth-scroll.js",
+    "vendor/uikit/src/js/toggle.js",
 )
 
 bootstrap_css = Bundle(
-    "vendor/bootstrap/less/*.less",
+    "vendor/bootstrap/less/bootstrap.less",
+    "vendor/uikit/src/less/*.less",
     filters=('recess',),
 )

@@ -35,4 +35,6 @@ prod-simulation:
 
 static:
 	bower install
+	rm -rf kush/static/.webassets-cache
+	python manage.py assets clean
 	python manage.py assets build

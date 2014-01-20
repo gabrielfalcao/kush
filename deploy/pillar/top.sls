@@ -1,3 +1,3 @@
 base:
-  '*':
-    - settings
+  'ffeast.weedlabs.io':
+    - ffeast

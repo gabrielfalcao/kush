@@ -1,13 +1,13 @@
-app_name: kush
+app_name: ffeast
 user: ubuntu
 
-git_repo: git@github.com:weedlabs/kush.git
-git_rev: master
+repository: git@github.com:weedlabs/ffeast.git
+revision: master
 
 base_path: "/srv"
 
 app_path: "/srv/app"
-static_path: "/srv/app/kush/static"
+static_path: "/srv/app/ffeast/static"
 
 etc_path: "/srv/etc"
 
@@ -19,11 +19,17 @@ lib_path: "/srv/usr/lib"
 
 log_path: "/var/log"
 
+github_users:
+  - gabrielfalcao: gabrielfalcao
+  - alscardoso: andre
+  - clarete: lincoln
+
 environment:
   PORT: "8000"
   LOGLEVEL: "DEBUG"
-  HOST: "kush.weedlabs.io"
-  DOMAIN: "kush.weedlabs.io"
+  HOST: "ffeast.weedlabs.io"
+  DOMAIN: "ffeast.weedlabs.io"
   REDIS_URI: "redis://localhost:6379"
   PATH: "/srv/venv/bin:$PATH"
   PYTHONPATH: "/srv/app:/src/venv:/src/venv/lib/python2.7:$PYTHONPATH"
+  SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/ffeast"

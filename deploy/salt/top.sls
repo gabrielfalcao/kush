@@ -1,3 +1,4 @@
 base:
-  '*':
-    - webserver
+  ffeast.weedlabs.io:
+    - wsgi-container
+    - ffeast

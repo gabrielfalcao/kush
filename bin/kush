@@ -63,7 +63,7 @@ def show_state(instance, started):
 for instance in reservation.instances:
     instance.add_tag("Name", subdomain)
     started = time.time()
-    while instance.state != 'running':
+    while not instance.public_dns_name:
         instance.update()
         print show_state(instance, started)
 
@@ -75,4 +75,4 @@ for instance in reservation.instances:
         subdomain, instance.public_dns_name)
     change = changes.add_change("CREATE", subdomain, "CNAME", ttl=60)
     change.add_value(instance.dns_name)
-    print "saving", changes.commit()
+    changes.commit()

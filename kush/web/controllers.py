@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 import json
 import socket
 from kush import settings
-from flask import Blueprint, render_template, session, url_for
+from flask import Blueprint, render_template, session, url_for, request
 from kush.framework.http import json_response
 from kush.framework.handy.functions import get_ip
 from twilio.rest import TwilioRestClient
@@ -41,10 +41,13 @@ def index():
     return render_template('index.html')
 
 
-@module.route('/sms/<subdomain>')
+@module.route('/sms/<subdomain>', methods=['POST'])
 def notify_sms(subdomain):
     remote_ip = get_ip()
-    resolved_ip = socket.gethostbyname(subdomain)
+    try:
+        resolved_ip = socket.gethostbyname(subdomain)
+    except:
+        return json_response({'error': subdomain}, 400)
 
     client = TwilioRestClient(
         settings.TWILIO_SID,
@@ -64,8 +67,15 @@ def notify_sms(subdomain):
             to=phone,
             from_=settings.TWILIO_PHONE)
 
-    return json_response({
+    try:
+        extra = json.loads(request.data)
+    except Exception as e:
+        extra = {'error': str(e), 'json': request.data}
+
+    data = {
         'subdomain': subdomain,
         'resolved_ip': resolved_ip,
         'remote_ip': remote_ip,
-    }, 200)
+    }
+    data.update(extra)
+    return json_response(data, 200)

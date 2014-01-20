@@ -1,0 +1,5 @@
+bong_public:
+  provider: bong-ec2
+  image: ami-a73264ce
+  size: Micro Instance
+  ssh_username: ubuntu

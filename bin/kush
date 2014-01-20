@@ -36,7 +36,7 @@ CLOUD_INIT = open(CLOUD_INIT_PATH).read().format(**locals())
 reservation = ec2.run_instances(
     image_id="ami-a73264ce",
     key_name="weedlabs-master",
-    instance_type="t1.micro",
+    instance_type="m1.small.micro",
     security_group_ids=[
         "sg-7580be1e",
         "sg-b5e0a7de",

@@ -73,6 +73,8 @@ for instance in reservation.instances:
 
     print "binding the domain \033[1;32m{0}\033[0m to \033[1;37m{1}\033[0m".format(
         subdomain, instance.public_dns_name)
+
+    # TODO: remove any existing entries for the given subdomain before creating the CNAME, avoid rejection :)
     change = changes.add_change("CREATE", subdomain, "CNAME", ttl=60)
     change.add_value(instance.dns_name)
     changes.commit()

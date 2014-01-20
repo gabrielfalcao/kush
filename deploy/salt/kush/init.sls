@@ -1,29 +1,22 @@
-ssh_config:
+{{ pillar['app_name'] }}_ssh_config:
   file.managed:
     - name: /root/.ssh/config
     - source: salt://kush/ssh_config
     - makedirs: True
 
-deploykey:
+{{ pillar['app_name'] }}_deploy_key:
   file.managed:
     - name: /root/.ssh/github
     - source: salt://kush/id_rsa
     - makedirs: True
     - mode: 600
 
-publickey:
+{{ pillar['app_name'] }}_public_key:
   file.managed:
     - name: /root/.ssh/github.pub
     - source: salt://kush/id_rsa.pub
     - makedirs: True
     - mode: 600
-
-
-{% for subname in ["enabled", "available"] %}
-/etc/nginx/sites-{{ subname }}/default:
-  file:
-    - absent
-{% endfor %}
 
 
 /etc/nginx/sites-enabled/{{ pillar['app_name'] }}:
@@ -66,6 +59,6 @@ start-{{ pillar['app_name'] }}:
       - pkg: supervisor
 
 
-reload-nginx:
+{{ pillar['app_name'] }}-reload-nginx:
   cmd.run:
     - name: service nginx force-reload

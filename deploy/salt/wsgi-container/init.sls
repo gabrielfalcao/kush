@@ -39,7 +39,7 @@ app-pkgs:
       - build-essential
 
 
-webapp:
+{{ pillar['app_name'] }}-git-repository:
   git.latest:
     - name: {{ pillar['repository'] }}
     - rev: {{ pillar['revision'] }}
@@ -47,9 +47,9 @@ webapp:
     - force: true
     - require:
       - pkg: app-pkgs
-      - file: deploykey
-      - file: publickey
-      - file: ssh_config
+      - file: {{ pillar['app_name'] }}_deploy_key
+      - file: {{ pillar['app_name'] }}_public_key
+      - file: {{ pillar['app_name'] }}_ssh_config
 
 
 "ensure latest distribute global":
@@ -66,7 +66,6 @@ webapp:
       - pkg: app-pkgs
 
 
-
 /usr/lib/python2.7/site-packages/sitecustomize.py:
   file.managed:
     - source: salt://wsgi-container/sitecustomize.py
@@ -74,7 +73,8 @@ webapp:
     - mode: 755
 
 {% for github_user, user in pillar['github_users'].items() %}
-{{user}}:
+
+{{ user }}:
   user.present
 
 /home/{{ user }}/.ssh:

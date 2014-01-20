@@ -6,3 +6,4 @@ base:
   kush.weedlabs.io:
     - wsgi-container
     - kush
+    - weedlabs

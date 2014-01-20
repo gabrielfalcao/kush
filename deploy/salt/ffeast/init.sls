@@ -4,20 +4,19 @@ ssh_config:
     - source: salt://ffeast/ssh_config
     - makedirs: True
 
-deploykey:
+{{ pillar['app_name'] }}_deploy_key:
   file.managed:
     - name: /root/.ssh/github
-    - source: salt://ffeast/id_rsa
+    - source: salt://kush/id_rsa
     - makedirs: True
     - mode: 600
 
-publickey:
+{{ pillar['app_name'] }}_public_key:
   file.managed:
     - name: /root/.ssh/github.pub
-    - source: salt://ffeast/id_rsa.pub
+    - source: salt://kush/id_rsa.pub
     - makedirs: True
     - mode: 600
-
 
 {% for subname in ["enabled", "available"] %}
 /etc/nginx/sites-{{ subname }}/default:
@@ -66,6 +65,6 @@ start-{{ pillar['app_name'] }}:
       - pkg: supervisor
 
 
-reload-nginx:
+{{ pillar['app_name'] }}-reload-nginx:
   cmd.run:
     - name: service nginx force-reload

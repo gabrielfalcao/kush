@@ -15,22 +15,12 @@
       - pkg: nginx
 
 
-{{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://weedlabs/www-fallback.tar.gz
-
-
-extract-www-fallback:
+copy-fallback-files:
   module.run:
-    - name: archive.tar
-    - options: zxf
-    - tarfile: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
-    - dest: {{ pillar['weedlabs']['www_fallback'] }}/
-    - archive_format: tar
-    - require:
-      - file: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
+    - name: cp.get_dir
+    - path: salt://weedlabs/www-fallback
+    - dest: {{ pillar['weedlabs']['www_fallback'] }}
+
 
 weedlabs_deploy_key:
   file.managed:

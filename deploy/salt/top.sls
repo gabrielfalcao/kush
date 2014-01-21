@@ -7,3 +7,4 @@ base:
     - wsgi-container
     - kush
     - weedlabs
+    - ffeast

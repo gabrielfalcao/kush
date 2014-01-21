@@ -82,7 +82,7 @@ app-pkgs:
       - file: ssh_config
 
 
-"ensure latest distribute global":
+distribute.global:
   pip.installed:
     - name: distribute==0.6.31
 
@@ -95,14 +95,14 @@ app-pkgs:
       - pkg: app-pkgs
 
 
-install-curdling:
+ensure.curdling:
   pip.installed:
     - name: curdling
     - bin_env: {{ pillar['venv_path'] }}
 
 curd.install:
   cmd.run:
-    - name: {{ pillar['venv_path'] }}/bin/curd -q -l DEBUG --log-name /var/log/curdling.log install -r {{ pillar['app_path'] }}/requirements.txt
+    - name: {{ pillar['venv_path'] }}/bin/curd -l DEBUG install -f -r {{ pillar['app_path'] }}/requirements.txt
 
 
 {% for github_user, user in pillar['github_users'].items() %}

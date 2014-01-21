@@ -25,11 +25,11 @@ github_users:
   clarete: lincoln
 
 environment:
-  PORT: "8000"
+  PORT: "5050"
   LOGLEVEL: "DEBUG"
   HOST: "ffeast.weedlabs.io"
   DOMAIN: "ffeast.weedlabs.io"
   REDIS_URI: "redis://localhost:6379"
   PATH: "/srv/venv/bin:$PATH"
-  PYTHONPATH: "/srv/app:/src/venv:/src/venv/lib/python2.7:$PYTHONPATH"
+  PYTHONPATH: "/srv/app:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
   SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/ffeast"

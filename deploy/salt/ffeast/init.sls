@@ -1,10 +1,3 @@
-{% for subname in ["enabled", "available"] %}
-/etc/nginx/sites-{{ subname }}/default:
-  file:
-    - absent
-{% endfor %}
-
-
 /etc/nginx/sites-enabled/{{ pillar['app_name'] }}:
   file:
     - managed

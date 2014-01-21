@@ -54,6 +54,21 @@ app-pkgs:
     - mode: 755
 
 
+{{ pillar['app_name'] }}_deploy_key:
+  file.managed:
+    - name: /root/.ssh/github
+    - source: salt://{{ pillar['app_name'] }}/id_rsa
+    - makedirs: True
+    - mode: 600
+
+{{ pillar['app_name'] }}_public_key:
+  file.managed:
+    - name: /root/.ssh/github.pub
+    - source: salt://{{ pillar['app_name'] }}/id_rsa.pub
+    - makedirs: True
+    - mode: 600
+
+
 {{ pillar['app_name'] }}-git-repository:
   git.latest:
     - name: {{ pillar['repository'] }}

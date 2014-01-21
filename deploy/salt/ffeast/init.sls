@@ -1,17 +1,3 @@
-{{ pillar['app_name'] }}_deploy_key:
-  file.managed:
-    - name: /root/.ssh/github
-    - source: salt://kush/id_rsa
-    - makedirs: True
-    - mode: 600
-
-{{ pillar['app_name'] }}_public_key:
-  file.managed:
-    - name: /root/.ssh/github.pub
-    - source: salt://kush/id_rsa.pub
-    - makedirs: True
-    - mode: 600
-
 {% for subname in ["enabled", "available"] %}
 /etc/nginx/sites-{{ subname }}/default:
   file:

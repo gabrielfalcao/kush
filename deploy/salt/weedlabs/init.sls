@@ -1,18 +1,3 @@
-weedlabs_deploy_key:
-  file.managed:
-    - name: /root/.ssh/github
-    - source: salt://weedlabs/id_rsa
-    - makedirs: True
-    - mode: 600
-
-weedlabs_public_key:
-  file.managed:
-    - name: /root/.ssh/github.pub
-    - source: salt://weedlabs/id_rsa.pub
-    - makedirs: True
-    - mode: 600
-
-
 /etc/nginx/sites-enabled/weedlabs:
   file:
     - managed
@@ -46,6 +31,20 @@ extract-www-fallback:
     - archive_format: tar
     - require:
       - file: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
+
+weedlabs_deploy_key:
+  file.managed:
+    - name: /root/.ssh/github
+    - source: salt://weedlabs/id_rsa
+    - makedirs: True
+    - mode: 600
+
+weedlabs_public_key:
+  file.managed:
+    - name: /root/.ssh/github.pub
+    - source: salt://weedlabs/id_rsa.pub
+    - makedirs: True
+    - mode: 600
 
 weedlabs.io:
   git.latest:

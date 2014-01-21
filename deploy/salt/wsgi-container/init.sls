@@ -1,3 +1,10 @@
+ssh_config:
+  file.managed:
+    - name: /root/.ssh/config
+    - source: salt://wsgi-container/ssh_config
+    - makedirs: True
+
+
 {% for service_name in ['redis-server', 'supervisor', 'nginx'] %}
 {{ service_name }}:
   pkg:

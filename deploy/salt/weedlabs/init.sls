@@ -1,13 +1,13 @@
 weedlabs_deploy_key:
   file.managed:
-    - name: /root/.ssh/weedlabs_io
+    - name: /root/.ssh/github
     - source: salt://weedlabs/id_rsa
     - makedirs: True
     - mode: 600
 
 weedlabs_public_key:
   file.managed:
-    - name: /root/.ssh/weedlabs_io.pub
+    - name: /root/.ssh/github.pub
     - source: salt://weedlabs/id_rsa.pub
     - makedirs: True
     - mode: 600

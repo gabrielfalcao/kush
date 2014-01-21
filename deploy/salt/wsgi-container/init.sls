@@ -64,7 +64,7 @@ app-pkgs:
       - pkg: app-pkgs
       - file: {{ pillar['app_name'] }}_deploy_key
       - file: {{ pillar['app_name'] }}_public_key
-      - file: {{ pillar['app_name'] }}_ssh_config
+      - file: ssh_config
 
 
 "ensure latest distribute global":

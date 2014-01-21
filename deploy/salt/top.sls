@@ -1,10 +1,8 @@
 base:
   ffeast.weedlabs.io:
-    - wsgi-container
+    - weedlabs
     - ffeast
 
   kush.weedlabs.io:
-    - wsgi-container
     - kush
     - weedlabs
-    - ffeast

@@ -1,3 +1,4 @@
+{% set app_name = pillar["wsgi-container"]["app_name"] %}
 ssh_config:
   file.managed:
     - name: /root/.ssh/config
@@ -24,6 +25,27 @@ ssh_config:
 {% endfor %}
 
 
+{{ app_name }}-repository:
+  git.latest:
+    - name: {{ pillar[app_name]['repository'] }}
+    - rev: master
+    - target: {{ pillar[app_name]['app_path'] }}
+    - force: true
+    - require:
+      - pkg: app-pkgs
+      - file: {{ app_name }}_deploy_key
+      - file: {{ app_name }}_public_key
+      - file: ssh_config
+
+
+ez_setup:
+  file.managed:
+    - name: /srv/ez_setup.py
+    - source: salt://wsgi-container/ez_setup.py
+    - makedirs: True
+    - mode: 755
+
+
 app-pkgs:
   pkg.installed:
     - names:
@@ -32,6 +54,8 @@ app-pkgs:
       - libevent-dev
       - libev-dev
       - python-dev
+      - python-bcrypt
+      - libcrypto++-dev
       - libmysqlclient-dev
       - vim
       - pkg-config
@@ -54,58 +78,33 @@ app-pkgs:
     - mode: 755
 
 
-{{ pillar['app_name'] }}_deploy_key:
-  file.managed:
-    - name: /root/.ssh/github
-    - source: salt://{{ pillar['app_name'] }}/id_rsa
-    - makedirs: True
-    - mode: 600
-
-{{ pillar['app_name'] }}_public_key:
-  file.managed:
-    - name: /root/.ssh/github.pub
-    - source: salt://{{ pillar['app_name'] }}/id_rsa.pub
-    - makedirs: True
-    - mode: 600
-
-
-{{ pillar['app_name'] }}-git-repository:
-  git.latest:
-    - name: {{ pillar['repository'] }}
-    - rev: {{ pillar['revision'] }}
-    - target: {{ pillar['app_path'] }}
-    - force: true
-    - require:
-      - pkg: app-pkgs
-      - file: {{ pillar['app_name'] }}_deploy_key
-      - file: {{ pillar['app_name'] }}_public_key
-      - file: ssh_config
-
-
 distribute.global:
   pip.installed:
-    - name: distribute==0.6.31
+    - name: distribute==0.7.3
 
 
-{{ pillar['venv_path'] }}:
+{{ pillar[app_name]['venv_path'] }}:
   virtualenv.manage:
+    - requirements: {{ pillar[app_name]['app_path'] }}/requirements.txt
     - no_site_packages: true
     - clear: false
     - require:
       - pkg: app-pkgs
 
 
-ensure.curdling:
-  pip.installed:
-    - name: curdling
-    - bin_env: {{ pillar['venv_path'] }}
-
-curd.install:
+easy_install.force:
   cmd.run:
-    - name: {{ pillar['venv_path'] }}/bin/curd -l DEBUG install -f -r {{ pillar['app_path'] }}/requirements.txt
+    - name: {{ pillar[app_name]['venv_path'] }}/bin/python /srv/ez_setup.py
 
+pip.force:
+  cmd.run:
+    - name: {{ pillar[app_name]['venv_path'] }}/bin/easy_install pip
 
-{% for github_user, user in pillar['github_users'].items() %}
+requirements.force:
+  cmd.run:
+    - name: {{ pillar[app_name]['venv_path'] }}/bin/pip install -r {{ pillar[app_name]['app_path'] }}/development.txt
+
+{% for github_user, user in pillar[app_name]['github_users'].items() %}
 
 {{ user }}:
   user.present
@@ -127,13 +126,14 @@ curd.install:
 
 {% endfor %}
 
-set-cronjob-highstate:
+
+set-cronjob-update-{{ app_name }}:
   module.run:
     - name: cron.set_job
     - user: root
-    - minute: 30
+    - minute: 60
     - hour: '*'
     - month: '*'
     - daymonth: '*'
     - dayweek: '*'
-    - cmd: 'salt-call state.highstate -l debug'
+    - cmd: 'cd {{ pillar[app_name]['app_path'] }} && (git fetch --prune; git reset --hard origin/{{ pillar[app_name]['revision'] }};git reset --hard;git clean -df) && supervisorctl {{ app_name }} force-reload'

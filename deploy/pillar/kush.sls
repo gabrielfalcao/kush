@@ -1,35 +1,41 @@
-app_name: kush
-user: ubuntu
+wsgi-container:
+  app_name: kush
 
-repository: git@github.com:weedlabs/kush.git
-revision: master
+kush:
+  app_name: kush
+  user: ubuntu
 
-base_path: "/srv"
+  repository: git@github.com:weedlabs/kush.git
+  revision: master
 
-app_path: "/srv/app"
-static_path: "/srv/app/kush/static"
+  base_path: "/srv"
 
-etc_path: "/srv/etc"
+  salt_repo_path: "/srv/core"
 
-venv_path: "/srv/venv"
+  app_path: "/srv/kush"
+  static_path: "/srv/kush/kush/static"
 
-prefix_path: "/srv/usr"
-bin_path: "/srv/usr/bin"
-lib_path: "/srv/usr/lib"
+  etc_path: "/srv/etc"
 
-log_path: "/var/log"
+  venv_path: "/srv/venv"
 
-github_users:
-  gabrielfalcao: gabrielfalcao
-  alscardoso: andre
-  clarete: lincoln
+  prefix_path: "/srv/usr"
+  bin_path: "/srv/usr/bin"
+  lib_path: "/srv/usr/lib"
 
-environment:
-  PORT: "4200"
-  LOGLEVEL: "DEBUG"
-  HOST: "kush.weedlabs.io"
-  DOMAIN: "kush.weedlabs.io"
-  REDIS_URI: "redis://localhost:6379"
-  PATH: "/srv/venv/bin:$PATH"
-  PYTHONPATH: "/srv/app:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
-  SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/kush"
+  log_path: "/var/log"
+
+  github_users:
+    gabrielfalcao: gabrielfalcao
+    alscardoso: andre
+    clarete: lincoln
+
+  environment:
+    PORT: "4200"
+    LOGLEVEL: "DEBUG"
+    HOST: "kush.weedlabs.io"
+    DOMAIN: "kush.weedlabs.io"
+    REDIS_URI: "redis://localhost:6379"
+    PATH: "/srv/venv/bin:$PATH"
+    PYTHONPATH: "/srv/kush:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
+    SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/kush"

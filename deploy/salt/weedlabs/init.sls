@@ -24,14 +24,14 @@ copy-fallback-files:
 
 weedlabs_deploy_key:
   file.managed:
-    - name: /root/.ssh/github
+    - name: /root/.ssh/weedlabs
     - source: salt://weedlabs/id_rsa
     - makedirs: True
     - mode: 600
 
 weedlabs_public_key:
   file.managed:
-    - name: /root/.ssh/github.pub
+    - name: /root/.ssh/weedlabs.pub
     - source: salt://weedlabs/id_rsa.pub
     - makedirs: True
     - mode: 600
@@ -42,6 +42,7 @@ weedlabs.io:
     - rev: {{ pillar['weedlabs']['revision'] }}
     - target: {{ pillar['weedlabs']['www_root'] }}
     - force: true
+    - identity: /root/.ssh/weedlabs
     - require:
       - pkg: app-pkgs
       - file: weedlabs_deploy_key

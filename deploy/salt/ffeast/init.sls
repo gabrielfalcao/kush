@@ -1,4 +1,21 @@
-/etc/nginx/sites-enabled/{{ pillar['app_name'] }}:
+ffeast_deploy_key:
+  file.managed:
+    - name: /root/.ssh/ffeast
+    - source: salt://ffeast/id_rsa
+    - makedirs: True
+    - mode: 600
+
+ffeast_public_key:
+  file.managed:
+    - name: /root/.ssh/ffeast.pub
+    - source: salt://ffeast/id_rsa.pub
+    - makedirs: True
+    - mode: 600
+
+include:
+  - wsgi-container
+
+/etc/nginx/sites-enabled/ffeast:
   file:
     - managed
     - template: jinja
@@ -7,7 +24,7 @@
       - pkg: nginx
 
 
-/etc/supervisor/conf.d/{{ pillar['app_name'] }}.conf:
+/etc/supervisor/conf.d/ffeast.conf:
   file:
     - managed
     - template: jinja
@@ -16,28 +33,28 @@
       - pkg: supervisor
 
 
-reread-supervisor:
+ffeast-reread-supervisor:
   cmd.run:
     - name: supervisorctl reread
 
 
-update-supervisor:
+ffeast-update-supervisor:
   cmd.run:
     - name: supervisorctl update
 
 
-reload-supervisor:
+ffeast-reload-supervisor:
   cmd.run:
     - name: supervisorctl reload all
 
 
-start-{{ pillar['app_name'] }}:
+start-ffeast:
   cmd.run:
-    - name: supervisorctl restart {{ pillar['app_name'] }} || echo "running"
+    - name: supervisorctl restart ffeast || echo "running"
     - require:
       - pkg: supervisor
 
 
-{{ pillar['app_name'] }}-reload-nginx:
+ffeast-reload-nginx:
   cmd.run:
     - name: service nginx force-reload

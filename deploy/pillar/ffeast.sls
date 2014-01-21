@@ -1,35 +1,39 @@
-app_name: ffeast
-user: ubuntu
+wsgi-container:
+  app_name: ffeast
 
-repository: git@github.com:weedlabs/ffeast.git
-revision: master
+ffeast:
+  app_name: ffeast
+  user: ubuntu
 
-base_path: "/srv"
+  repository: git@github.com:weedlabs/ffeast.git
+  revision: master
 
-app_path: "/srv/app"
-static_path: "/srv/app/ffeast/static"
+  base_path: "/srv"
 
-etc_path: "/srv/etc"
+  app_path: "/srv/ffeast"
+  static_path: "/srv/ffeast/ffeast/static"
 
-venv_path: "/srv/venv"
+  etc_path: "/srv/etc"
 
-prefix_path: "/srv/usr"
-bin_path: "/srv/usr/bin"
-lib_path: "/srv/usr/lib"
+  venv_path: "/srv/venv"
 
-log_path: "/var/log"
+  prefix_path: "/srv/usr"
+  bin_path: "/srv/usr/bin"
+  lib_path: "/srv/usr/lib"
 
-github_users:
-  gabrielfalcao: gabrielfalcao
-  alscardoso: andre
-  clarete: lincoln
+  log_path: "/var/log"
 
-environment:
-  PORT: "5050"
-  LOGLEVEL: "DEBUG"
-  HOST: "ffeast.weedlabs.io"
-  DOMAIN: "ffeast.weedlabs.io"
-  REDIS_URI: "redis://localhost:6379"
-  PATH: "/srv/venv/bin:$PATH"
-  PYTHONPATH: "/srv/app:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
-  SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/ffeast"
+  github_users:
+    gabrielfalcao: gabrielfalcao
+    alscardoso: andre
+    clarete: lincoln
+
+  environment:
+    PORT: "5050"
+    LOGLEVEL: "DEBUG"
+    HOST: "ffeast.weedlabs.io"
+    DOMAIN: "ffeast.weedlabs.io"
+    REDIS_URI: "redis://localhost:6379"
+    PATH: "/srv/venv/bin:$PATH"
+    PYTHONPATH: "/srv/ffeast:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
+    SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/ffeast"

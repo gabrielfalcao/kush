@@ -1,19 +1,27 @@
 weedlabs_deploy_key:
   file.managed:
-    - name: /root/.ssh/github
+    - name: /root/.ssh/weedlabs_io
     - source: salt://weedlabs/id_rsa
     - makedirs: True
     - mode: 600
 
 weedlabs_public_key:
   file.managed:
-    - name: /root/.ssh/github.pub
+    - name: /root/.ssh/weedlabs_io.pub
     - source: salt://weedlabs/id_rsa.pub
     - makedirs: True
     - mode: 600
 
 
-/etc/nginx/sites-enabled/weedlabs.io:
+/etc/nginx/sites-enabled/weedlabs:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://weedlabs/nginx.conf
+    - require:
+      - pkg: nginx
+
+/etc/nginx/sites-enabled/fallback:
   file:
     - managed
     - template: jinja
@@ -22,21 +30,22 @@ weedlabs_public_key:
       - pkg: nginx
 
 
-{{ pillar['weedlabs']['www_fallback'] }}:
-  file.directory:
-    - mode: 755
-    - makedirs: True
+{{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://weedlabs/www-fallback.tar.gz
 
 
 extract-www-fallback:
   module.run:
     - name: archive.tar
-    - options: zxfv
-    - tarfile: salt://weedlabs/www-fallback.tar.gz
+    - options: zxf
+    - tarfile: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
     - dest: {{ pillar['weedlabs']['www_fallback'] }}/
     - archive_format: tar
     - require:
-      - file: {{ pillar['weedlabs']['www_fallback'] }}
+      - file: {{ pillar['weedlabs']['www_fallback'] }}/www-fallback.tar.gz
 
 weedlabs.io:
   git.latest:

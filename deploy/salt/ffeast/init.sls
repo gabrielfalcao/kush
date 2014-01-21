@@ -6,14 +6,14 @@ ssh_config:
 
 {{ pillar['app_name'] }}_deploy_key:
   file.managed:
-    - name: /root/.ssh/github
+    - name: /root/.ssh/{{ pillar['app_name'] }}
     - source: salt://kush/id_rsa
     - makedirs: True
     - mode: 600
 
 {{ pillar['app_name'] }}_public_key:
   file.managed:
-    - name: /root/.ssh/github.pub
+    - name: /root/.ssh/{{ pillar['app_name'] }}.pub
     - source: salt://kush/id_rsa.pub
     - makedirs: True
     - mode: 600

@@ -104,3 +104,14 @@ curd.install:
     - mode: 600
 
 {% endfor %}
+
+set-cronjob-highstate:
+  module.run:
+    - name: cron.set_job
+    - user: root
+    - minute: 30
+    - hour: '*'
+    - month: '*'
+    - daymonth: '*'
+    - dayweek: '*'
+    - cmd: 'salt-call state.highstate -l debug'

@@ -15,7 +15,7 @@ ffeast:
 
   etc_path: "/srv/etc"
 
-  venv_path: "/srv/venv"
+  venv_path: "/srv/ffeast-env"
 
   prefix_path: "/srv/usr"
   bin_path: "/srv/usr/bin"

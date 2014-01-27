@@ -4,5 +4,6 @@ base:
     - ffeast
 
   kush.weedlabs.io:
+    - ffeast
     - kush
     - weedlabs

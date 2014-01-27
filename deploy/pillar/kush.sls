@@ -1,5 +1,4 @@
-wsgi-container:
-  app_name: kush
+wsgi-containers: ['kush', 'ffeast']
 
 kush:
   app_name: kush

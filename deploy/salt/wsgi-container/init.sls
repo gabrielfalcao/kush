@@ -1,4 +1,4 @@
-{% set app_name = pillar["wsgi-container"]["app_name"] %}
+{% for app_name in pillar["wsgi-containers"] %}
 ssh_config:
   file.managed:
     - name: /root/.ssh/config
@@ -138,3 +138,5 @@ set-cronjob-update-{{ app_name }}:
     - daymonth: '*'
     - dayweek: '*'
     - cmd: 'cd {{ pillar[app_name]['app_path'] }} && (git fetch --prune; git reset --hard origin/{{ pillar[app_name]['revision'] }};git reset --hard;git clean -df) && supervisorctl {{ app_name }} force-reload'
+
+{% endfor %}

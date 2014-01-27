@@ -1,5 +1,4 @@
-wsgi-container:
-  app_name: ffeast
+wsgi-containers: ['ffeast']
 
 ffeast:
   app_name: ffeast

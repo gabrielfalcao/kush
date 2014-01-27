@@ -36,6 +36,6 @@ kush:
     HOST: "kush.weedlabs.io"
     DOMAIN: "kush.weedlabs.io"
     REDIS_URI: "redis://localhost:6379"
-    PATH: "/srv/venv/bin:$PATH"
-    PYTHONPATH: "/srv/kush:/src/venv/lib/python2.7/site-packages:$PYTHONPATH"
+    PATH: "/srv/kush-env/bin:$PATH"
+    PYTHONPATH: "/srv/kush:/srv/kush-env/lib/python2.7/site-packages:$PYTHONPATH"
     SQLALCHEMY_DATABASE_URI: "mysql://root@localhost/kush"

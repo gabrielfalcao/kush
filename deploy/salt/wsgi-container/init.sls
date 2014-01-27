@@ -28,8 +28,9 @@ ssh_config:
 {{ app_name }}-repository:
   git.latest:
     - name: {{ pillar[app_name]['repository'] }}
-    - rev: master
+    - rev: {{ pillar[app_name]['revision'] }}
     - target: {{ pillar[app_name]['app_path'] }}
+    - identity: /root/.ssh/{{ app_name }}
     - force: true
     - require:
       - pkg: app-pkgs
